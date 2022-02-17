@@ -5,9 +5,11 @@
 
 using System;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 class Program
 {
+
     public static void Main(string[] args)
     {
         // Load data files into arrays
@@ -21,6 +23,9 @@ class Program
         //loop
         void Menu()
         {
+            // Exit blooean
+            bool Stop = false;
+
             //Menu Text
             Console.WriteLine();
             Console.WriteLine("Main Menu:");
@@ -38,7 +43,7 @@ class Program
                 case 1:
                     Console.Clear();
                     Console.WriteLine("Please input a Word");
-                    WordInput = Console.ReadLine().ToLower().Trim();
+                    WordInput = Console.ReadLine();
                     if (WordInput.Length > 0)
                     {
                         Console.WriteLine(LinearCheckArray(dictionary, WordInput));
@@ -53,7 +58,7 @@ class Program
                     WordInput = Console.ReadLine();
                     if (WordInput.Length > 0)
                     {
-                        Console.WriteLine(LinearCheckArray(dictionary, WordInput));
+                        Console.WriteLine(BinaryCheckArray(dictionary, WordInput));
                     }
                     else
                     {
@@ -62,31 +67,15 @@ class Program
                     break;
                 case 3:
                     Console.Clear();
-                    WordInput = Console.ReadLine();
-                    if (WordInput.Length > 0)
-                    {
-                        Console.WriteLine(LinearCheckArray(aliceWords, WordInput));
-                    }
-                    else
-                    {
-                        Console.WriteLine("Word not inputed, returning to menu");
-                    }
+                    Console.WriteLine(AliceLinearCheckArray(dictionary, aliceWords));
                     break;
                 case 4:
                     Console.Clear();
-                    WordInput = Console.ReadLine();
-                    if (WordInput.Length > 0)
-                    {
-                        Console.WriteLine(LinearCheckArray(dictionary, WordInput));
-                    }
-                    else
-                    {
-                        Console.WriteLine("Word not inputed, returning to menu");
-                    }
+                    Console.WriteLine(BinaryCheckArray(dictionary, aliceText));
                     break;
                 case 5:
                     Console.Clear();
-                    WordInput = Console.ReadLine();
+                    Stop = true;
                     break;
                 default:
                     Console.Clear();
@@ -94,36 +83,62 @@ class Program
                     break;
             }
             //loop menu
-            Menu();
+            if (Stop != true)
+            {
+                Menu();
+            }
         }
     }
 
-    //Linear Search
+    //Linear Search a word
     public static string LinearCheckArray(string[] array, string word)
     {
-        word = word.ToLower();
+        //Searh Timer
+        var Time = new Stopwatch();
+        TimeSpan TotalTime = Time.Elapsed;
+        Time.Start();
+
+        // Trim spaces and make word lowercased
+        word = word.ToLower().Trim();
+
         for (int i = 0; i < array.Length; i++)
         {
             if (array[i] == word)
             {
-                return word + " is in the dictionary at position " + i.ToString();
+                Time.Stop();
+                TotalTime = Time.Elapsed;
+                return $"{word} is in the dictionary at position { i.ToString()} ({TotalTime})";
             }
         }
-        return word + " is not in the dictionary";
+        Time.Stop();
+        TotalTime = Time.Elapsed;
+        return $"word is not in dictionary ({TotalTime})";
     }
 
-    //Binary Search
+    //Binary Search a word
     public static string BinaryCheckArray(string[] array, string word)
     {
+        // Search Timer
+        var Time = new Stopwatch();
+        TimeSpan TotalTime = Time.Elapsed;
+        Time.Start();
+
+        // Trim spaces and make word lowercased
+        word = word.ToLower().Trim();
+
+        // Lower and Upper Index
         int Li = 0;
         int Ui = array.Length;
+
         while (Ui >= Li)
         {
             int Mi = ((Li + Ui) / 2);
             int check = word.CompareTo(array[Mi]);
             if (check == 0)
             {
-                return word + " is in the dictionary at position " + Mi.ToString();
+                Time.Stop();
+                TotalTime = Time.Elapsed;
+                return $"word is in dictionary at position { Mi.ToString()} ({TotalTime})";
             }
             else if (check > 0)
             {
@@ -134,8 +149,47 @@ class Program
                 Ui = Mi - 1;
             }
         }
-
-        return word + " is not in the dictionary";
+        Time.Stop();
+        TotalTime = Time.Elapsed;
+        return $"{word} is not in dictionary ({TotalTime})";
 
     }
+
+    public static string AliceLinearCheckArray(string[] array, string[] alice)
+    {
+        //Searh Timer
+        var Time = new Stopwatch();
+        TimeSpan TotalTime = Time.Elapsed;
+        Time.Start();
+
+        // word counter
+        int Found = 0;
+        int NotFound = 0;
+        int Total = 0;
+
+        for (int i = 0; i < alice.Length; i++)
+        {
+            string word = alice[i].ToLower().Trim();
+            for (int x = 0; x < array.Length; x++)
+            {
+                if (array[x] == word)
+                {
+                    Found++;
+                    break;
+                }
+            }
+            NotFound++;
+        }
+        Time.Stop();
+        TotalTime = Time.Elapsed;
+        Total = NotFound - Found;
+        return $"Number of words not found in the dictionary: {Total} ({TotalTime})";
+    }
+
+
+
+
+
+
+
 }
