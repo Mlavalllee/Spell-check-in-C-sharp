@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "ZzzKMhyNYmpun/ZlOHPELV4uEQmWbTPkT0y36gMsChigv36EeAEUK1BySuZrSfhmkTWVyqGa8eAuaJTuQ5F4Hg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\m.lavallee3\\Desktop\\spellcheck-C-startcode\\main.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\m.lavallee3\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.13\\microsoft.netcore.app.host.win-x64.5.0.13.nupkg.sha512"
+  ],
+  "logs": []
+}
